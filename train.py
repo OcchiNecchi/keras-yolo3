@@ -14,7 +14,7 @@ from yolo3.utils import get_random_data
 
 
 def _main():
-    annotation_path = 'train.txt'
+    annotation_path = 'model_data/2007_test.txt'
     log_dir = 'logs/000/'
     classes_path = 'model_data/voc_classes.txt'
     anchors_path = 'model_data/yolo_anchors.txt'
@@ -23,6 +23,10 @@ def _main():
     anchors = get_anchors(anchors_path)
 
     input_shape = (416,416) # multiple of 32, hw
+    
+    # 引数で設定されていればそれを設定する
+    if len(sys.argv) > 1:
+        input_shape = (int(sys.argv[1], int(sys.argv[1]))
 
     is_tiny_version = len(anchors)==6 # default setting
     if is_tiny_version:
@@ -54,7 +58,12 @@ def _main():
             # use custom yolo_loss Lambda layer.
             'yolo_loss': lambda y_true, y_pred: y_pred})
 
+        # トレーニング時のバッチサイズを決める
+        # 入力があればその値で実施する
         batch_size = 32
+        if len(sys.argv) > 2:
+            batch_size = int(sy.argv[2])
+
         print('Train on {} samples, val on {} samples, with batch size {}.'.format(num_train, num_val, batch_size))
         model.fit_generator(data_generator_wrapper(lines[:num_train], batch_size, input_shape, anchors, num_classes),
                 steps_per_epoch=max(1, num_train//batch_size),
@@ -74,6 +83,10 @@ def _main():
         print('Unfreeze all of the layers.')
 
         batch_size = 32 # note that more GPU memory is required after unfreezing the body
+        # トレーニングが終わった後のテストでもバッチ数が変わるようにする
+        if len(sys.argv) > 2:
+            batch_size = int(sy.argv[2])
+
         print('Train on {} samples, val on {} samples, with batch size {}.'.format(num_train, num_val, batch_size))
         model.fit_generator(data_generator_wrapper(lines[:num_train], batch_size, input_shape, anchors, num_classes),
             steps_per_epoch=max(1, num_train//batch_size),
