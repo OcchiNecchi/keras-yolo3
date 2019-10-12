@@ -1,6 +1,6 @@
 import xml.etree.ElementTree as ET
 from os import getcwd
-
+import sys,os
 sets=[('2007', 'train'), ('2007', 'val'), ('2007', 'test')]
 
 classes = ["blousonjacket","coat","pants","parker","polo_shirt","shoes","t_shirt","tailoredjacket","tie","y_shirt"]
