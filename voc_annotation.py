@@ -40,7 +40,7 @@ for year, image_set in sets:
     for image_id in image_ids:
         if image_id == '1': continue
         if image_id == '-1': continue
-        list_file.write('%s/VOCdevkit/VOC%s/JPEGImages/%s.jpg'%(wd, year, image_id))
+        list_file.write('%s/VOCdevkit/VOC%s/JPEGImages/%s'%(wd, year, image_id))
         convert_annotation(year, image_id, list_file)
         list_file.write('\n')
     list_file.close()

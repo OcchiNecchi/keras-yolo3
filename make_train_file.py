@@ -1,7 +1,7 @@
 # もとのkeras-YOLOにはないオリジナルなPythonコード
 import os
 import pandas
-main_dir = 'VOCDevkit/VOC2007/ImageSets/Main'
+main_dir = 'VOCdevkit/VOC2007/ImageSets/Main'
 os.chdir(main_dir)
 pwd = os.getcwd()
 print(pwd)
